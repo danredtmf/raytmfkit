@@ -24,7 +24,7 @@ draw_button :: proc(
         pos.x - core.get_scale(pad.x),
         pos.y - core.get_scale(pad.y),
         m.x   + core.get_scale(pad.x * 2),
-        m.y,
+        m.y   + core.get_scale(pad.y * 2),
     }
 
     rl.DrawRectangleRec(rect^, bg)
