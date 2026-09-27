@@ -1,6 +1,7 @@
 package text
 
 import "core:c"
+import "raytmfkit:core"
 import rl "deps:raylib"
 
 @(private)
@@ -22,13 +23,7 @@ sdf_shader_set :: proc(threshold, sharpness: f32) {
     sharpness_local := sharpness
 
 	if t_loc >=
-	   0 {set_shader_f32(sdf_shader, t_loc, threshold_local)}
+	   0 {core.set_shader_f32(sdf_shader, t_loc, threshold_local)}
 	if s_loc >=
-	   0 {set_shader_f32(sdf_shader, s_loc, sharpness_local)}
-}
-
-@(private)
-set_shader_f32 :: proc(shader: rl.Shader, loc: c.int, value: f32) {
-    v := value
-    rl.SetShaderValue(shader, rl.ShaderLocationIndex(loc), &v, .FLOAT)
+	   0 {core.set_shader_f32(sdf_shader, s_loc, sharpness_local)}
 }
