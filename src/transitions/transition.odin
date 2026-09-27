@@ -1,7 +1,7 @@
 package transitions
 
 import rl "deps:raylib"
-import eff "raytmfkit:effects"
+import "raytmfkit:effects"
 
 Phase :: enum {
 	IDLE,
@@ -14,8 +14,8 @@ MidCallback :: #type proc()
 
 Transition :: struct {
 	phase:     Phase,
-	fade:      eff.FadeTranslate,
-	hold:      eff.Timer,
+	fade:      effects.FadeTranslate,
+	hold:      effects.Timer,
 	cover:     rl.Color, // во что затемняемся
 	reveal:    rl.Color, // что открывается после
 	in_dur:    f32,
@@ -28,8 +28,8 @@ Transition :: struct {
 init :: proc(t: ^Transition) {
     t.phase     = .IDLE
     t.fired_mid = false
-    eff.init_fade_translate(&t.fade, rl.BLANK)
-    eff.init_timer(&t.hold)
+    effects.init_fade_translate(&t.fade, rl.BLANK)
+    effects.init_timer(&t.hold)
     t.cover  = rl.BLACK
     t.reveal = rl.BLANK
     t.in_dur = 1
@@ -61,7 +61,7 @@ begin :: proc(
     t.fired_mid = false
     t.phase     = .FADE_IN
 
-    eff.fade_translate_to(&t.fade, cover, in_dur)
+    effects.fade_translate_to(&t.fade, cover, in_dur)
 }
 
 // Обновление. Зови раз в кадр.
@@ -71,14 +71,14 @@ update :: proc(t: ^Transition, dt: f32) {
         return
 
     case .FADE_IN:
-        eff.fade_translate_update(&t.fade, dt)
+        effects.fade_translate_update(&t.fade, dt)
         if !t.fade.active {
             t.phase = .HOLD
-            eff.timer_to(&t.hold, t.hold_dur)
+            effects.timer_to(&t.hold, t.hold_dur)
         }
 
     case .HOLD:
-        eff.timer_update(&t.hold, dt)
+        effects.timer_update(&t.hold, dt)
         if !t.fired_mid {
             t.fired_mid = true
             if t.on_mid != nil { t.on_mid() }
@@ -86,11 +86,11 @@ update :: proc(t: ^Transition, dt: f32) {
         // Ждём, пока timer доиграет — но колбэк уже сработал
         if !t.hold.active {
             t.phase = .FADE_OUT
-            eff.fade_translate_to(&t.fade, t.reveal, t.out_dur)
+            effects.fade_translate_to(&t.fade, t.reveal, t.out_dur)
         }
 
     case .FADE_OUT:
-        eff.fade_translate_update(&t.fade, dt)
+        effects.fade_translate_update(&t.fade, dt)
         if !t.fade.active {
             t.phase = .IDLE
         }

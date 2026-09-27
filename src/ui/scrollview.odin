@@ -1,7 +1,7 @@
 package ui
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 import "raytmfkit:input"
 
 ScrollView :: struct {
@@ -26,7 +26,7 @@ update_scrollview :: proc(sv: ^ScrollView) {
 
     if sv.content_h <= sv.view_rect.height { return }  // скроллбар не нужен
 
-    bar_w   := kcore.get_scale(sv.bar_width)
+    bar_w   := core.get_scale(sv.bar_width)
     track_r := rl.Rectangle{
         sv.view_rect.x + sv.view_rect.width - bar_w,
         sv.view_rect.y,
@@ -43,13 +43,13 @@ update_scrollview :: proc(sv: ^ScrollView) {
     // Drag
     if input.pressed_on_rect(thumb_r) {
         sv.dragging    = true
-        sv.drag_offset = kcore.ctx.mouse.y - thumb_r.y
+        sv.drag_offset = core.ctx.mouse.y - thumb_r.y
     }
     if input.is_mouse_released() { sv.dragging = false }
 
     if sv.dragging {
         new_y := clamp(
-            kcore.ctx.mouse.y - sv.drag_offset,
+            core.ctx.mouse.y - sv.drag_offset,
             track_r.y,
             track_r.y + track_r.height - thumb_h,
         )
@@ -62,7 +62,7 @@ draw_scrollview_bar :: proc(sv: ScrollView) {
     if sv.content_h <= sv.view_rect.height { return }
 
     max_scroll := sv.content_h - sv.view_rect.height
-    bar_w   := kcore.get_scale(sv.bar_width)
+    bar_w   := core.get_scale(sv.bar_width)
     track_r := rl.Rectangle{
         sv.view_rect.x + sv.view_rect.width - bar_w,
         sv.view_rect.y,

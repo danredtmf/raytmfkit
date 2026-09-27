@@ -1,7 +1,7 @@
 package text
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 
 current_font: rl.Font
 current_is_sdf: bool
@@ -46,5 +46,5 @@ draw_text :: proc(text: cstring, size: f32, pos: rl.Vector2, color: rl.Color) {
 
 // Утилита: масштабировать размер под screen, потом рисовать
 draw_text_scaled :: proc(text: cstring, base_size: f32, pos: rl.Vector2, color: rl.Color) {
-	draw_text(text, kcore.get_scale(base_size), pos, color)
+	draw_text(text, core.get_scale(base_size), pos, color)
 }

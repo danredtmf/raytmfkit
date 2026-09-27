@@ -2,7 +2,7 @@ package debug
 
 import rl "deps:raylib"
 import "core:fmt"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 
 // Публичные флаги — игра сама решает, когда их включать.
 enabled:      bool  // общий тумблер оверлея
@@ -54,9 +54,9 @@ addf :: proc(name, format: string, args: ..any) {
 draw_overlay :: proc() {
     if !enabled { return }
 
-    size    := kcore.get_scale(font_size)
-    spacing := kcore.get_scale(line_spacing)
-    m       := kcore.get_scale(margin)
+    size    := core.get_scale(font_size)
+    spacing := core.get_scale(line_spacing)
+    m       := core.get_scale(margin)
 
     x := i32(m)
     y := i32(m)
@@ -76,8 +76,8 @@ draw_overlay :: proc() {
     }
 
     for label in labels {
-        name_cs  := kcore.cstring_temp(label.name)
-        value_cs := kcore.cstring_temp(label.value)
+        name_cs  := core.cstring_temp(label.name)
+        value_cs := core.cstring_temp(label.value)
         if name_cs == nil || value_cs == nil { continue }
 
         s := rl.TextFormat("%s: %s", name_cs, value_cs)

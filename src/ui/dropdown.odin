@@ -1,7 +1,7 @@
 package ui
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 import "raytmfkit:text"
 import "raytmfkit:input"
 
@@ -21,8 +21,8 @@ update_dropdown :: proc(
     font: rl.Font,
     anchor: rl.Vector2,   // центр верхнего прямоугольника
 ) {
-    size := kcore.get_scale(f32(font.baseSize))
-    d.item_height = size + kcore.get_scale(10)
+    size := core.get_scale(f32(font.baseSize))
+    d.item_height = size + core.get_scale(10)
 
     // Кэш ширины по самой длинной строке (только если изменились items)
     if d.recompute_width || d.widest_item_w == 0 {
@@ -35,8 +35,8 @@ update_dropdown :: proc(
         d.recompute_width = false
     }
 
-    rect_w := d.widest_item_w + size + kcore.get_scale(20)
-    rect_h := size + kcore.get_scale(10)
+    rect_w := d.widest_item_w + size + core.get_scale(20)
+    rect_h := size + core.get_scale(10)
     d.rect = rl.Rectangle{
         anchor.x - rect_w / 2,
         anchor.y - rect_h / 2,
@@ -70,13 +70,13 @@ update_dropdown :: proc(
 }
 
 draw_dropdown :: proc(d: Dropdown, font: rl.Font) {
-    size := kcore.get_scale(f32(font.baseSize))
-    margin := kcore.get_scale(10)
+    size := core.get_scale(f32(font.baseSize))
+    margin := core.get_scale(10)
 
     // Верхний прямоугольник
     col_border := input.hover_rect(d.rect) ? rl.LIGHTGRAY : rl.GRAY
     rl.DrawRectangleRec(d.rect, rl.BLACK)
-    rl.DrawRectangleLinesEx(d.rect, kcore.get_scale(2), col_border)
+    rl.DrawRectangleLinesEx(d.rect, core.get_scale(2), col_border)
 
     // Текущий выбранный текст
     if d.selected >= 0 && d.selected < i32(len(d.items)) {
@@ -88,7 +88,7 @@ draw_dropdown :: proc(d: Dropdown, font: rl.Font) {
     }
 
     // Треугольник справа
-    tri_x := d.rect.x + d.rect.width - size / 2 - kcore.get_scale(8)
+    tri_x := d.rect.x + d.rect.width - size / 2 - core.get_scale(8)
     tri_y := d.rect.y + d.rect.height / 2
     tri_s := size / 2
     if d.focused {

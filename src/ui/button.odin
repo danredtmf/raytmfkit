@@ -1,7 +1,7 @@
 package ui
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 import "raytmfkit:text"
 import "raytmfkit:input"
 
@@ -15,15 +15,15 @@ draw_button :: proc(
     fg   := rl.WHITE,
     pad  := rl.Vector2{10, 5},   // в виртуальных пикселях
 ) {
-    size := kcore.get_scale(f32(font.baseSize))
+    size := core.get_scale(f32(font.baseSize))
     m    := text.measure_text(font, label, size)
 
     pos := rl.Vector2{ center.x - m.x / 2, center.y - m.y / 2 }
 
     rect^ = rl.Rectangle{
-        pos.x - kcore.get_scale(pad.x),
-        pos.y - kcore.get_scale(pad.y),
-        m.x   + kcore.get_scale(pad.x * 2),
+        pos.x - core.get_scale(pad.x),
+        pos.y - core.get_scale(pad.y),
+        m.x   + core.get_scale(pad.x * 2),
         m.y,
     }
 
@@ -43,7 +43,7 @@ draw_button_layout :: proc(
     bg := rl.BLACK,
     fg := rl.WHITE,
 ) {
-    size := kcore.get_scale(f32(font.baseSize))
+    size := core.get_scale(f32(font.baseSize))
     m    := text.measure_text(font, label, size)
 
     pos := rl.Vector2{
@@ -52,10 +52,10 @@ draw_button_layout :: proc(
     }
 
     rect^ = rl.Rectangle{
-        pos.x - kcore.get_scale(10),
-        pos.y - kcore.get_scale(5),
-        m.x   + kcore.get_scale(20),
-        m.y   - kcore.get_scale(8),
+        pos.x - core.get_scale(10),
+        pos.y - core.get_scale(5),
+        m.x   + core.get_scale(20),
+        m.y   - core.get_scale(8),
     }
 
     rl.DrawRectangleRec(rect^, bg)
@@ -72,7 +72,7 @@ draw_button_triangle :: proc(
     rect:          ^rl.Rectangle,
     triangle_left: bool,
 ) {
-    scaled := rl.Vector2{ kcore.get_scale(size_xy.x), kcore.get_scale(size_xy.y) }
+    scaled := rl.Vector2{ core.get_scale(size_xy.x), core.get_scale(size_xy.y) }
     rect^ = rl.Rectangle{
         center.x - scaled.x / 2,
         center.y - scaled.y / 2,
@@ -82,7 +82,7 @@ draw_button_triangle :: proc(
     hovered := input.hover_rect(rect^)
     tri_col := hovered ? rl.DARKGRAY : rl.WHITE
 
-    ts := rl.Vector2{ kcore.get_scale(tri_size.x), kcore.get_scale(tri_size.y) }
+    ts := rl.Vector2{ core.get_scale(tri_size.x), core.get_scale(tri_size.y) }
     mid := rl.Vector2{ rect^.x + rect^.width / 2, rect^.y + rect^.height / 2 }
 
     a, b, c: rl.Vector2

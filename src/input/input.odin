@@ -1,7 +1,7 @@
 package input
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 
 is_mouse_pressed :: proc(button := rl.MouseButton.LEFT) -> bool {
 	return rl.IsMouseButtonPressed(button)
@@ -20,7 +20,7 @@ is_mouse_released :: proc(button := rl.MouseButton.LEFT) -> bool {
 }
 
 hover_rect :: proc(rect: rl.Rectangle) -> bool {
-	return rl.CheckCollisionPointRec(kcore.ctx.mouse, rect)
+	return rl.CheckCollisionPointRec(core.ctx.mouse, rect)
 }
 
 pressed_on_rect :: proc(rect: rl.Rectangle, b := rl.MouseButton.LEFT) -> bool {
@@ -40,7 +40,7 @@ released_on_rect :: proc(rect: rl.Rectangle, b := rl.MouseButton.LEFT) -> bool {
 }
 
 hover_circle :: proc(c: rl.Vector2, r: f32) -> bool {
-	return rl.CheckCollisionPointCircle(kcore.ctx.mouse, c, r)
+	return rl.CheckCollisionPointCircle(core.ctx.mouse, c, r)
 }
 
 pressed_on_circle :: proc(c: rl.Vector2, r: f32, b := rl.MouseButton.LEFT) -> bool {

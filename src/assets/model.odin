@@ -1,7 +1,7 @@
 package assets
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 
 // Extra file that must sit next to the main model file
 // because the model references it by name (material, texture).
@@ -34,7 +34,7 @@ load_model :: proc(
         }
     }
 
-    cs := kcore.cstring_temp(path)
+    cs := core.cstring_temp(path)
     if cs == nil {
         return rl.Model{}
     }

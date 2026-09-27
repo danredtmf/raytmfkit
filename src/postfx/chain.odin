@@ -2,7 +2,7 @@ package postfx
 
 import "core:math"
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 
 // Как растягивать финальную текстуру на экран.
 FinalScaleMode :: enum {
@@ -95,8 +95,8 @@ final_texture :: proc(c: ^Chain) -> rl.Texture2D {
 // Заполняет c._dst_rect — прямоугольник на экране, куда попадает рендер.
 // Фон для полос (при LETTERBOX / INTEGER) заливается чёрным.
 draw_final :: proc(c: ^Chain) {
-    win_w := f32(kcore.ctx.screen.x)
-    win_h := f32(kcore.ctx.screen.y)
+    win_w := f32(core.ctx.screen.x)
+    win_h := f32(core.ctx.screen.y)
     src_w := f32(c.virtual_size[0])
     src_h := f32(c.virtual_size[1])
 
@@ -126,7 +126,7 @@ draw_final :: proc(c: ^Chain) {
     c._dst_rect = dst
 
     if c.mode != .STRETCH {
-        rl.DrawRectangle(0, 0, kcore.ctx.screen.x, kcore.ctx.screen.y, rl.BLACK)
+        rl.DrawRectangle(0, 0, core.ctx.screen.x, core.ctx.screen.y, rl.BLACK)
     }
 
     // Render target в raylib хранится перевёрнутым по Y — отрицательная высота.

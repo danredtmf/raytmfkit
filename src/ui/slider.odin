@@ -1,7 +1,7 @@
 package ui
 
 import rl "deps:raylib"
-import kcore "raytmfkit:core"
+import "raytmfkit:core"
 import "raytmfkit:text"
 import "raytmfkit:input"
 
@@ -20,7 +20,7 @@ update_slider :: proc(
     width := f32(450),
     height := f32(25),
 ) {
-    size := kcore.get_scale(f32(font.baseSize))
+    size := core.get_scale(f32(font.baseSize))
 
     // Текст-заголовок сверху
     m := text.measure_text(font, label, size)
@@ -36,8 +36,8 @@ update_slider :: proc(
     text.draw_text_ex(font, label, size, text_pos, rl.WHITE)
 
     // Трек слайдера
-    scaled_w := kcore.get_scale(width)
-    scaled_h := kcore.get_scale(height)
+    scaled_w := core.get_scale(width)
+    scaled_h := core.get_scale(height)
     track := rl.Rectangle{
         anchor.x - scaled_w / 2,
         text_rect.y + text_rect.height + scaled_h / 2,
@@ -54,7 +54,7 @@ update_slider :: proc(
     rl.DrawRectangleRec(track, rl.BLACK)
     rl.DrawRectangleLinesEx(track, 1, rl.DARKGRAY)
 
-    knob_r   := kcore.get_scale(8)
+    knob_r   := core.get_scale(8)
     padding  := knob_r * 1.5
     usable_w := track.width - 2 * padding
 
@@ -69,7 +69,7 @@ update_slider :: proc(
     if input.is_mouse_released() { s.active = false }
 
     if s.active && input.is_mouse_down() {
-        t = clamp((kcore.ctx.mouse.x - (track.x + padding)) / usable_w, 0, 1)
+        t = clamp((core.ctx.mouse.x - (track.x + padding)) / usable_w, 0, 1)
         s.value = s.min + t * (s.max - s.min)
     }
 
@@ -79,6 +79,6 @@ update_slider :: proc(
     // Значение справа от заголовка
     val_str := rl.TextFormat("%.2f", s.value)
     mv := text.measure_text(font, val_str, size)
-    val_pos := rl.Vector2{ anchor.x - mv.x / 2, text_pos.y + m.y + kcore.get_scale(4) }
+    val_pos := rl.Vector2{ anchor.x - mv.x / 2, text_pos.y + m.y + core.get_scale(4) }
     text.draw_text_ex(font, val_str, size, val_pos, rl.WHITE)
 }

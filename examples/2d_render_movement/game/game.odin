@@ -26,7 +26,7 @@ update :: proc(g: ^Game, dt: f32) {
 			transitions.begin(&g.trans, nil)
 		}
 	}
-	
+
 	if rl.IsKeyDown(.A) {g.player.position.x -= g.player.speed * dt}
 	if rl.IsKeyDown(.D) {g.player.position.x += g.player.speed * dt}
 	if rl.IsKeyDown(.W) {g.player.position.y -= g.player.speed * dt}

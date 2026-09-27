@@ -1,7 +1,7 @@
 package light
 
 import rl "deps:raylib"
-import eff "raytmfkit:effects"
+import "raytmfkit:effects"
 
 MAX_LIGHTS :: 16
 
@@ -15,9 +15,9 @@ Light :: struct {
     enabled:        b32,
     position:       [3]f32,
     target:         [3]f32,
-    color:          eff.FadeTranslate,
+    color:          effects.FadeTranslate,
     attenuation:    f32,
-    power:          eff.FadeValue(f32),
+    power:          effects.FadeValue(f32),
 
     // Shader uniform locations. -1 if not found.
     enabled_loc:    i32,
@@ -48,8 +48,8 @@ create :: proc(
     light.target      = target
     light.attenuation = attenuation
 
-    eff.init_fade_translate(&light.color, color)
-    eff.init_fade_value(&light.power, power)
+    effects.init_fade_translate(&light.color, color)
+    effects.init_fade_value(&light.power, power)
 
     // Locations получаются через TextFormat — единственный способ подставить индекс.
     light.enabled_loc     = i32(rl.GetShaderLocation(shader, rl.TextFormat("lights[%i].enabled",     index)))
