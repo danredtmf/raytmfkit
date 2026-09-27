@@ -61,6 +61,7 @@ load_font_sdf :: proc(data: []u8, size: c.int, cps: []rune, padding: c.int = 6) 
     atlas := rl.GenImageFontAtlas(glyphs, &glyph_recs, glyph_count, size, padding, 0)
 
     texture := rl.LoadTextureFromImage(atlas)
+    rl.SetTextureFilter(texture, .TRILINEAR)
     rl.UnloadImage(atlas)
 
     return rl.Font {
