@@ -1,6 +1,6 @@
 [attr]lfs-file filter=lfs diff=lfs merge=lfs -text
-
 *.dll lfs-file
 *.lib lfs-file
 *.a lfs-file
 *.so lfs-file
+*.ttf lfs-file
