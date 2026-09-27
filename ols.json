@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/DanielGavin/ols/master/misc/ols.schema.json",
+  "enable_document_symbols": true,
+  "enable_snippets": true,
+  "enable_hover": true,
+  "collections": [
+    {"name": "raytmfkit", "path": "src"},
+    {"name": "deps", "path": "deps"}
+  ]
+}
