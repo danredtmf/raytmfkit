@@ -54,9 +54,9 @@ addf :: proc(name, format: string, args: ..any) {
 draw_overlay :: proc() {
     if !enabled { return }
 
-    size    := core.get_scale(font_size)
-    spacing := core.get_scale(line_spacing)
-    m       := core.get_scale(margin)
+    size    := font_size
+    spacing := line_spacing
+    m       := margin
 
     x := i32(m)
     y := i32(m)
