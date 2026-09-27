@@ -4,6 +4,12 @@
 
 A code package designed to simplify development in Odin using raylib. It was formatted and extracted from the *Way Out Of Here* project codebase, then subsequently refined and improved.
 
+## Examples
+
+- [Simple Window](examples\simple_window)
+- [2D Render Movement](examples\2d_render_movement)
+- [Transition Demo](examples\transition_demo)
+
 ## What is not included
 
 RayTMFKit contains no game logic. It has no concept of a "player," monster types, or inventory structure; all of that is the game's responsibility. The Kit provides the mechanisms—such as loading textures, rendering text, switching screens, and saving state—while the developer decides how to utilize them.
