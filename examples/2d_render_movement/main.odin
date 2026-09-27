@@ -16,6 +16,7 @@ main :: proc() {
 	core.ctx.default_size = {1280, 720}
 
 	rl.InitWindow(core.ctx.default_size.x, core.ctx.default_size.y, "RayTMFKit - Simple Window")
+	// rl.SetWindowMinSize(640, 360)
 	// rl.SetWindowState({.WINDOW_RESIZABLE})
 	defer rl.CloseWindow()
 
