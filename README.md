@@ -9,6 +9,7 @@ A code package designed to simplify development in Odin using raylib. It was for
 - [Simple Window](examples/simple_window)
 - [2D Render Movement](examples/2d_render_movement)
 - [Transition Demo](examples/transition_demo)
+- [UI Demo](examples/ui_demo)
 
 ## What is not included
 
