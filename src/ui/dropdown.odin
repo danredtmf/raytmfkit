@@ -19,24 +19,24 @@ Dropdown :: struct {
 update_dropdown :: proc(
     d: ^Dropdown,
     font: rl.Font,
+    size: f32,
     anchor: rl.Vector2,   // центр верхнего прямоугольника
 ) {
-    size := core.get_scale(f32(font.baseSize))
-    d.item_height = size + core.get_scale(10)
+	d.item_height = core.get_scale(size) + core.get_scale(10)
 
     // Кэш ширины по самой длинной строке (только если изменились items)
     if d.recompute_width || d.widest_item_w == 0 {
         w := f32(0)
         for it in d.items {
-            m := text.measure_text(font, it, size)
+            m := text.measure_text(font, it, core.get_scale(size))
             if m.x > w { w = m.x }
         }
         d.widest_item_w  = w
         d.recompute_width = false
     }
 
-    rect_w := d.widest_item_w + size + core.get_scale(20)
-    rect_h := size + core.get_scale(10)
+    rect_w := d.widest_item_w + core.get_scale(size) + core.get_scale(20)
+    rect_h := core.get_scale(size) + core.get_scale(10)
     d.rect = rl.Rectangle{
         anchor.x - rect_w / 2,
         anchor.y - rect_h / 2,
@@ -69,8 +69,7 @@ update_dropdown :: proc(
     }
 }
 
-draw_dropdown :: proc(d: Dropdown, font: rl.Font) {
-    size := core.get_scale(f32(font.baseSize))
+draw_dropdown :: proc(d: Dropdown, font: rl.Font, size: f32) {
     margin := core.get_scale(10)
 
     // Верхний прямоугольник
@@ -82,15 +81,15 @@ draw_dropdown :: proc(d: Dropdown, font: rl.Font) {
     if d.selected >= 0 && d.selected < i32(len(d.items)) {
         txt_pos := rl.Vector2{
             d.rect.x + margin,
-            d.rect.y + d.rect.height / 2 - size / 2,
+            d.rect.y + d.rect.height / 2 - core.get_scale(size) / 2,
         }
-        text.draw_text_ex(font, d.items[d.selected], size, txt_pos, rl.WHITE)
+        text.draw_text_ex(font, d.items[d.selected], core.get_scale(size), txt_pos, rl.WHITE)
     }
 
     // Треугольник справа
-    tri_x := d.rect.x + d.rect.width - size / 2 - core.get_scale(8)
+    tri_x := d.rect.x + d.rect.width - core.get_scale(size) / 2 - core.get_scale(8)
     tri_y := d.rect.y + d.rect.height / 2
-    tri_s := size / 2
+    tri_s := core.get_scale(size) / 2
     if d.focused {
         rl.DrawTriangle(
             {tri_x, tri_y + tri_s / 2},
@@ -99,10 +98,10 @@ draw_dropdown :: proc(d: Dropdown, font: rl.Font) {
             col_border,
         )
     } else {
-        rl.DrawTriangle(
-            {tri_x, tri_y - tri_s / 2},
-            {tri_x + tri_s, tri_y - tri_s / 2},
-            {tri_x + tri_s / 2, tri_y + tri_s / 2},
+    	rl.DrawTriangle(
+            {tri_x, tri_y - tri_s / 2},                 // v1 — верх-лево
+            {tri_x + tri_s / 2, tri_y + tri_s / 2},      // v2 — низ-центр
+            {tri_x + tri_s, tri_y - tri_s / 2},          // v3 — верх-право
             col_border,
         )
     }
@@ -117,9 +116,9 @@ draw_dropdown :: proc(d: Dropdown, font: rl.Font) {
 
             txt_pos := rl.Vector2{
                 item_r.x + margin,
-                item_r.y + item_r.height / 2 - size / 2,
+                item_r.y + item_r.height / 2 - core.get_scale(size) / 2,
             }
-            text.draw_text_ex(font, d.items[i], size, txt_pos, rl.WHITE)
+            text.draw_text_ex(font, d.items[i], core.get_scale(size), txt_pos, rl.WHITE)
         }
     }
 }
