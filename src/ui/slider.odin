@@ -16,24 +16,28 @@ update_slider :: proc(
     s: ^Slider,
     label: cstring,
     font: rl.Font,
+    size: f32,
     anchor: rl.Vector2,       // центр текста над слайдером
     width := f32(450),
     height := f32(25),
 ) {
-    size := core.get_scale(f32(font.baseSize))
-
     // Текст-заголовок сверху
-    m := text.measure_text(font, label, size)
-    text_pos := rl.Vector2{ anchor.x - m.x / 2, anchor.y - size }
+    m := text.measure_text(font, label, core.get_scale(size))
+
+    // Значение
+    val_str := rl.TextFormat("%.2f", s.value)
+    mv := text.measure_text(font, val_str, core.get_scale(size))
+
+    text_pos := rl.Vector2{ anchor.x - m.x / 2, anchor.y - core.get_scale(size) }
     text_rect := rl.Rectangle{
-        text_pos.x - 10,
-        text_pos.y,
-        m.x + 20,
-        m.y + 20,
+        text_pos.x - core.get_scale(10),
+        text_pos.y - core.get_scale(4),
+        m.x + core.get_scale(20),
+        m.y + m.y + core.get_scale(12),
     }
     rl.DrawRectangleRec(text_rect, rl.BLACK)
     rl.DrawRectangleLinesEx(text_rect, 1, rl.DARKGRAY)
-    text.draw_text_ex(font, label, size, text_pos, rl.WHITE)
+    text.draw_text_ex(font, label, core.get_scale(size), text_pos, rl.WHITE)
 
     // Трек слайдера
     scaled_w := core.get_scale(width)
@@ -76,9 +80,7 @@ update_slider :: proc(
     rl.DrawCircle(i32(knob_x), i32(knob_y), knob_r, s.active ? rl.DARKGRAY : rl.WHITE)
     rl.DrawCircleLines(i32(knob_x), i32(knob_y), knob_r, s.active ? rl.BLACK : rl.DARKGRAY)
 
-    // Значение справа от заголовка
-    val_str := rl.TextFormat("%.2f", s.value)
-    mv := text.measure_text(font, val_str, size)
+    // Значение внизу
     val_pos := rl.Vector2{ anchor.x - mv.x / 2, text_pos.y + m.y + core.get_scale(4) }
-    text.draw_text_ex(font, val_str, size, val_pos, rl.WHITE)
+    text.draw_text_ex(font, val_str, core.get_scale(size), val_pos, rl.WHITE)
 }
