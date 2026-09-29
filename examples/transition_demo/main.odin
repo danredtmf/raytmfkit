@@ -22,7 +22,7 @@ main :: proc() {
 	core.toggle_fps_limit(true)
 	core.set_vsync(true)
 
-	data_font := #load("fonts/OpenSans-Regular.ttf")
+	data_font := #load("../_assets/fonts/OpenSans-Regular.ttf")
 	text.sdf_shader = text.load_default_sdf_shader()
 	cps := text.get_default_codepoints()
 	fonts := text.load_font_pair(data_font, 128, cps[:])
