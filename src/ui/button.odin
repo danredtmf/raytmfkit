@@ -9,14 +9,14 @@ import "raytmfkit:input"
 draw_button :: proc(
     font:      rl.Font,
     label:     cstring,
+    size:	   f32,
     center:    rl.Vector2,
     rect:      ^rl.Rectangle,
     bg   := rl.BLACK,
     fg   := rl.WHITE,
     pad  := rl.Vector2{10, 5},   // в виртуальных пикселях
 ) {
-    size := core.get_scale(f32(font.baseSize))
-    m    := text.measure_text(font, label, size)
+    m    := text.measure_text(font, label, core.get_scale(size))
 
     pos := rl.Vector2{ center.x - m.x / 2, center.y - m.y / 2 }
 
@@ -29,7 +29,7 @@ draw_button :: proc(
 
     rl.DrawRectangleRec(rect^, bg)
     col := input.hover_rect(rect^) ? rl.ColorAlpha(fg, 0.5) : fg
-    text.draw_text_ex(font, label, size, pos, col)
+    text.draw_text_ex(font, label, core.get_scale(size), pos, col)
     rl.DrawRectangleLinesEx(rect^, 1, rl.DARKGRAY)
 }
 
@@ -37,18 +37,18 @@ draw_button :: proc(
 draw_button_layout :: proc(
     font:         rl.Font,
     label:        cstring,
+    size:	      f32,
     anchor:       rl.Vector2,     // обычно {screen_half.x, screen_vec2.y}
     rect:         ^rl.Rectangle,
     y_multiplier: f32,
     bg := rl.BLACK,
     fg := rl.WHITE,
 ) {
-    size := core.get_scale(f32(font.baseSize))
-    m    := text.measure_text(font, label, size)
+    m    := text.measure_text(font, label, core.get_scale(size))
 
     pos := rl.Vector2{
         anchor.x - m.x / 2,
-        anchor.y - size * y_multiplier,
+        anchor.y - core.get_scale(size) * y_multiplier,
     }
 
     rect^ = rl.Rectangle{
@@ -60,7 +60,7 @@ draw_button_layout :: proc(
 
     rl.DrawRectangleRec(rect^, bg)
     col := input.hover_rect(rect^) ? rl.ColorAlpha(fg, 0.5) : fg
-    text.draw_text_ex(font, label, size, pos, col)
+    text.draw_text_ex(font, label, core.get_scale(size), pos, col)
     rl.DrawRectangleLinesEx(rect^, 1, rl.DARKGRAY)
 }
 
