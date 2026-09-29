@@ -13,47 +13,66 @@ Slider :: struct {
 }
 
 update_slider :: proc(
-    s: ^Slider,
-    label: cstring,
-    font: rl.Font,
-    size: f32,
-    anchor: rl.Vector2,       // центр текста над слайдером
-    width := f32(450),
-    height := f32(25),
+    s:           ^Slider,
+    label:       cstring,
+    font:        rl.Font,
+    size:        f32,
+    anchor:      rl.Vector2,
+    anchor_mode  := Anchor.CENTER,
+    width        := f32(450),
+    height       := f32(25),
 ) {
-    // Текст-заголовок сверху
-    m := text.measure_text(font, label, core.get_scale(size))
-
-    // Значение
+    // 1. Считаем размеры всех частей виджета
+    m       := text.measure_text(font, label, core.get_scale(size))
     val_str := rl.TextFormat("%.2f", s.value)
-    mv := text.measure_text(font, val_str, core.get_scale(size))
+    mv      := text.measure_text(font, val_str, core.get_scale(size))
 
-    text_pos := rl.Vector2{ anchor.x - m.x / 2, anchor.y - core.get_scale(size) }
-    text_rect := rl.Rectangle{
-        text_pos.x - core.get_scale(10),
-        text_pos.y - core.get_scale(4),
-        m.x + core.get_scale(20),
-        m.y + m.y + core.get_scale(12),
+    text_h  := m.y + mv.y + core.get_scale(8)   // заголовок + значение + отступ между
+    title_w := m.x + core.get_scale(20)
+    val_w   := mv.x + core.get_scale(20)
+    top_w   := max(title_w, val_w)              // ширина по самой широкой строке сверху
+
+    track_w := core.get_scale(width)
+    track_h := core.get_scale(height)
+
+    total_w := max(top_w, track_w)
+    total_h := text_h + track_h + core.get_scale(8)  // + отступ между текстом и треком
+
+    // 2. Общий прямоугольник виджета — от него и отталкивается anchor
+    origin := resolve_anchor(anchor, {total_w, total_h}, anchor_mode)
+
+    // 3. Заголовок — по центру верхней части
+    title_pos := rl.Vector2{
+        origin.x + (total_w - m.x) / 2,
+        origin.y,
     }
-    rl.DrawRectangleRec(text_rect, rl.BLACK)
-    rl.DrawRectangleLinesEx(text_rect, 1, rl.DARKGRAY)
-    text.draw_text_ex(font, label, core.get_scale(size), text_pos, rl.WHITE)
+    // Рамка заголовка — только под ним
+    title_rect := rl.Rectangle{
+        origin.x + (total_w - title_w) / 2,
+        origin.y - core.get_scale(4),
+        title_w,
+        m.y + core.get_scale(8),
+    }
+    rl.DrawRectangleRec(title_rect, rl.BLACK)
+    rl.DrawRectangleLinesEx(title_rect, 1, rl.DARKGRAY)
+    text.draw_text_ex(font, label, core.get_scale(size), title_pos, rl.WHITE)
 
-    // Трек слайдера
-    scaled_w := core.get_scale(width)
-    scaled_h := core.get_scale(height)
+    // 4. Значение — по центру, под заголовком
+    val_pos := rl.Vector2{
+        origin.x + (total_w - mv.x) / 2,
+        origin.y + m.y + core.get_scale(4),
+    }
+    text.draw_text_ex(font, val_str, core.get_scale(size), val_pos, rl.WHITE)
+
+    // 5. Трек — по центру нижней части
     track := rl.Rectangle{
-        anchor.x - scaled_w / 2,
-        text_rect.y + text_rect.height + scaled_h / 2,
-        scaled_w,
-        scaled_h,
+        origin.x + (total_w - track_w) / 2,
+        origin.y + text_h + core.get_scale(4),
+        track_w,
+        track_h,
     }
-    s.rect = rl.Rectangle{
-        track.x,
-        text_rect.y,
-        track.width,
-        text_rect.height + track.height + scaled_h / 2,
-    }
+
+    s.rect = rl.Rectangle{origin.x, origin.y, total_w, total_h}
 
     rl.DrawRectangleRec(track, rl.BLACK)
     rl.DrawRectangleLinesEx(track, 1, rl.DARKGRAY)
@@ -79,8 +98,4 @@ update_slider :: proc(
 
     rl.DrawCircle(i32(knob_x), i32(knob_y), knob_r, s.active ? rl.DARKGRAY : rl.WHITE)
     rl.DrawCircleLines(i32(knob_x), i32(knob_y), knob_r, s.active ? rl.BLACK : rl.DARKGRAY)
-
-    // Значение внизу
-    val_pos := rl.Vector2{ anchor.x - mv.x / 2, text_pos.y + m.y + core.get_scale(4) }
-    text.draw_text_ex(font, val_str, core.get_scale(size), val_pos, rl.WHITE)
 }

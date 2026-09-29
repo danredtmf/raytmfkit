@@ -11,59 +11,49 @@ Dropdown :: struct {
     focused:        bool,
     frozen:         bool,        // временно заблокирован (напр., другим dropdown)
     rect:           rl.Rectangle, // заполняется в draw
-    item_height:    f32,
     widest_item_w:  f32,          // кэш ширины самого длинного
     recompute_width: bool,        // флаг «пересчитать»
 }
 
 update_dropdown :: proc(
-    d: ^Dropdown,
-    font: rl.Font,
-    size: f32,
-    anchor: rl.Vector2,   // центр верхнего прямоугольника
+    d:           ^Dropdown,
+    font:        rl.Font,
+    size:        f32,
+    anchor:      rl.Vector2,
+    anchor_mode  := Anchor.CENTER,
 ) {
-	d.item_height = core.get_scale(size) + core.get_scale(10)
-
-    // Кэш ширины по самой длинной строке (только если изменились items)
+    // Кэш ширины по самой длинной строке — в НЕотмасштабированных единицах
     if d.recompute_width || d.widest_item_w == 0 {
         w := f32(0)
         for it in d.items {
-            m := text.measure_text(font, it, core.get_scale(size))
+            m := text.measure_text(font, it, size)   // без get_scale
             if m.x > w { w = m.x }
         }
         d.widest_item_w  = w
         d.recompute_width = false
     }
 
-    rect_w := d.widest_item_w + core.get_scale(size) + core.get_scale(20)
-    rect_h := core.get_scale(size) + core.get_scale(10)
-    d.rect = rl.Rectangle{
-        anchor.x - rect_w / 2,
-        anchor.y - rect_h / 2,
-        rect_w,
-        rect_h,
-    }
+    rect_w := core.get_scale(d.widest_item_w + size + 20)
+    rect_h := core.get_scale(size + 10)
+
+    origin := resolve_anchor(anchor, {rect_w, rect_h}, anchor_mode)
+    d.rect = rl.Rectangle{origin.x, origin.y, rect_w, rect_h}
 
     if d.frozen { return }
 
     if input.is_mouse_pressed() {
         if input.hover_rect(d.rect) {
-            // Клик по верхнему прямоугольнику — toggle
             d.focused = !d.focused
             return
         }
-
         if d.focused {
-            // Клик по одному из пунктов
             for i in 0 ..< len(d.items) {
-                item_r := dropdown_item_rect(d^, i)
-                if input.hover_rect(item_r) {
+                if input.hover_rect(dropdown_item_rect(d^, i)) {
                     d.selected = i32(i)
                     d.focused  = false
                     return
                 }
             }
-            // Клик вне — закрыть
             d.focused = false
         }
     }
