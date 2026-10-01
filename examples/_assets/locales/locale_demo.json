@@ -1,0 +1,5 @@
+{
+  "APP_NAME": {"EN": "Locale Demo", "RU": "Тест локали"},
+  "TEST_TEXT": {"EN": "Test text", "RU": "Тестовый текст"},
+  "LANG_TEXT": {"EN": "Language", "RU": "Язык"}
+}
