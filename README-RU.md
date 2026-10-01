@@ -10,6 +10,7 @@
 - [2D Render Movement](examples/2d_render_movement)
 - [Transition Demo](examples/transition_demo)
 - [UI Demo](examples/ui_demo)
+- [Locale Demo](examples/locale_demo)
 
 ## Что не входит
 
