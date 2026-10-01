@@ -37,6 +37,10 @@ get_default_codepoints :: proc(allocator := context.allocator) -> [dynamic]rune 
         0x2026, // …
         0x00AB, 0x00BB, // « »
         0x2116, // №
+        0x2193, // ↓
+        0x2191, // ↑
+        0x2190, // ←
+        0x2192, // →
     )
 
     return cps
