@@ -89,6 +89,11 @@ update_slider :: proc(
        input.pressed_on_circle({knob_x, knob_y}, knob_r) {
         s.active = true
     }
+
+    if want_cursor_over(track, .RESIZE_EW) ||
+       want_cursor_over_circle({knob_x, knob_y}, knob_r, .RESIZE_EW) {
+    }
+
     if input.is_mouse_released() { s.active = false }
 
     if s.active && input.is_mouse_down() {

@@ -62,8 +62,19 @@ update_dropdown :: proc(
 draw_dropdown :: proc(d: Dropdown, font: rl.Font, size: f32) {
     margin := core.get_scale(10)
 
+    // Курсор над самим дропдауном или его раскрытым списком.
+    hovered := want_cursor_over(d.rect, .POINTING_HAND)
+    if d.focused {
+        for i in 0 ..< len(d.items) {
+            if input.hover_rect(dropdown_item_rect(d, i)) {
+                hovered = true
+                break
+            }
+        }
+    }
+
     // Верхний прямоугольник
-    col_border := input.hover_rect(d.rect) ? rl.LIGHTGRAY : rl.GRAY
+    col_border := hovered ? rl.LIGHTGRAY : rl.GRAY
     rl.DrawRectangleRec(d.rect, rl.BLACK)
     rl.DrawRectangleLinesEx(d.rect, core.get_scale(2), col_border)
 

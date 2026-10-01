@@ -28,7 +28,9 @@ draw_button :: proc(
     }
 
     rl.DrawRectangleRec(rect^, bg)
-    col := input.hover_rect(rect^) ? rl.ColorAlpha(fg, 0.5) : fg
+    hovered := input.hover_rect(rect^)
+    if hovered { core.want_cursor(.POINTING_HAND) }
+    col := hovered ? rl.ColorAlpha(fg, 0.5) : fg
     text.draw_text_ex(font, label, core.get_scale(size), pos, col)
     rl.DrawRectangleLinesEx(rect^, 1, rl.DARKGRAY)
 }
@@ -47,7 +49,7 @@ draw_button_triangle :: proc(
 
     rect^ = rl.Rectangle{pos.x, pos.y, scaled.x, scaled.y}
 
-    hovered := input.hover_rect(rect^)
+    hovered := want_cursor_over(rect^, .POINTING_HAND)
     tri_col := hovered ? rl.DARKGRAY : rl.WHITE
 
     ts  := rl.Vector2{core.get_scale(tri_size.x), core.get_scale(tri_size.y)}

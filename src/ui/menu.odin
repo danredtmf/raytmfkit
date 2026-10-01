@@ -180,6 +180,13 @@ menu_update :: proc(
 menu_draw :: proc(m: Menu, font: rl.Font) {
     if !m.laid_out || len(m.items) == 0 { return }
 
+    // Курсор: POINTING_HAND над любым пунктом.
+    for i in 0 ..< len(m.items) {
+        if want_cursor_over(m.rects[i], .POINTING_HAND) && m.items[i].enabled {
+            break
+        }
+    }
+
     bw := core.get_scale(m.style.border_width)
     if bw < 1 { bw = 1 }
 
