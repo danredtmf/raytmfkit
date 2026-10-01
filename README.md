@@ -11,6 +11,8 @@ A code package designed to simplify development in Odin using raylib. It was for
 - [Transition Demo](examples/transition_demo)
 - [UI Demo](examples/ui_demo)
 - [Locale Demo](examples/locale_demo)
+- [Menu Demo](examples/menu_demo)
+- [Text Input Demo](examples/text_input_demo)
 
 ## What is not included
 

@@ -11,6 +11,8 @@
 - [Transition Demo](examples/transition_demo)
 - [UI Demo](examples/ui_demo)
 - [Locale Demo](examples/locale_demo)
+- [Menu Demo](examples/menu_demo)
+- [Text Input Demo](examples/text_input_demo)
 
 ## Что не входит
 
