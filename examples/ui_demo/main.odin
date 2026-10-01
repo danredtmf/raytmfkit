@@ -24,9 +24,12 @@ main :: proc() {
 
 	btn_apply := rl.Rectangle{}
 	btn_apply_1 := cstring("Кнопка / Button")
-	btn_apply_2 := cstring("Отпустили / Released")
+	btn_apply_2 := cstring("Наводимся / Hovering")
 	btn_apply_3 := cstring("Удерживаем / Pressing")
+	btn_apply_4 := cstring("Отпустили / Released")
 	btn_apply_text := &btn_apply_1
+
+	btn_released_timer := f32(0)
 
 	slider := ui.Slider {
 		min = 1,
@@ -59,14 +62,19 @@ main :: proc() {
 		if rl.IsKeyPressed(.F) {
 			core.toggle_fullscreen()
 		}
-		if input.hover_rect(btn_apply) {
-			btn_apply_text = &btn_apply_1
-		}
 
-		if input.is_mouse_pressed() && input.down_on_rect(btn_apply) {
+		if btn_released_timer >=0 {btn_released_timer -= core.ctx.delta}
+		if input.hover_rect(btn_apply) {
+			if btn_released_timer <= 0 {btn_apply_text = &btn_apply_2}
+		} else {
+			if btn_released_timer <= 0 {btn_apply_text = &btn_apply_1}
+		}
+		if input.down_on_rect(btn_apply) {
 			btn_apply_text = &btn_apply_3
-		} else if input.released_on_rect(btn_apply) {
-			btn_apply_text = &btn_apply_2
+		}
+		if input.released_on_rect(btn_apply) {
+			btn_apply_text = &btn_apply_4
+			btn_released_timer = 1
 		}
 
 		sv.view_rect = {core.get_scale(50), core.get_scale(50), core.ctx.screen_half.x, core.ctx.screen_half.y}
