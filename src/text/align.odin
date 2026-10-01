@@ -1,6 +1,7 @@
 package text
 
 import rl "deps:raylib"
+import "raytmfkit:core"
 
 TextAlignH :: enum {
 	LEFT,
@@ -23,7 +24,7 @@ draw_text_aligned :: proc(
 	align_v: TextAlignV = .MIDDLE,
 	offset: rl.Vector2 = {0, 0},
 ) -> rl.Rectangle {
-	m := measure_text_current(text, size)
+	m := measure_text_current(text, core.get_scale(size))
 
 	x: f32
 	switch align_h {
@@ -46,6 +47,6 @@ draw_text_aligned :: proc(
 	}
 
 	draw_pos := rl.Vector2{x + offset.x, y + offset.y}
-	draw_text(text, size, draw_pos, color)
+	draw_text(text, core.get_scale(size), draw_pos, color)
 	return rl.Rectangle{draw_pos.x, draw_pos.y, m.x, m.y}
 }
