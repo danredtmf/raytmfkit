@@ -60,7 +60,7 @@ update_slider :: proc(
     // 4. Значение — по центру, под заголовком
     val_pos := rl.Vector2{
         origin.x + (total_w - mv.x) / 2,
-        origin.y + m.y + core.get_scale(4),
+        origin.y + m.y + core.get_scale(7),
     }
     text.draw_text_ex(font, val_str, core.get_scale(size), val_pos, rl.WHITE)
 
