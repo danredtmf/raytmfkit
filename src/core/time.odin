@@ -13,4 +13,5 @@ begin_frame :: proc() {
     ctx.mouse_delta = rl.GetMouseDelta()
     ctx.fullscreen  = is_fullscreen()
     ctx.focused     = rl.IsWindowFocused()
+    reset_cursor_intent()
 }
