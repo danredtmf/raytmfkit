@@ -16,22 +16,32 @@ draw_button :: proc(
     bg           := rl.BLACK,
     fg           := rl.WHITE,
     pad          := rl.Vector2{10, 5},
+    min_size     := rl.Vector2{0, 0},
 ) {
 	m := text.measure_text(font, label, core.get_scale(size))
-    pos := resolve_anchor(anchor, m, anchor_mode)
 
-    rect^ = rl.Rectangle{
-        pos.x - core.get_scale(pad.x),
-        pos.y - core.get_scale(pad.y),
-        m.x   + core.get_scale(pad.x * 2),
-        m.y   + core.get_scale(pad.y * 2),
+    w := m.x + core.get_scale(pad.x * 2)
+    h := m.y + core.get_scale(pad.y * 2)
+    if min_size.x > w { w = min_size.x }
+    if min_size.y > h { h = min_size.y }
+
+    // anchor_mode трактуется относительно rect размера {w, h}.
+    pos := resolve_anchor(anchor, {w, h}, anchor_mode)
+
+    rect^ = rl.Rectangle{pos.x, pos.y, w, h}
+
+    // Текст центрируется внутри rect (при min_size = {0,0} совпадает
+    // с прежним поведением: rect == m + 2pad, текст на pos + pad).
+    text_pos := rl.Vector2{
+        rect^.x + (rect^.width  - m.x) / 2,
+        rect^.y + (rect^.height - m.y) / 2,
     }
 
     rl.DrawRectangleRec(rect^, bg)
     hovered := input.hover_rect(rect^)
     if hovered { core.want_cursor(.POINTING_HAND) }
     col := hovered ? rl.ColorAlpha(fg, 0.5) : fg
-    text.draw_text_ex(font, label, core.get_scale(size), pos, col)
+    text.draw_text_ex(font, label, core.get_scale(size), text_pos, col)
     rl.DrawRectangleLinesEx(rect^, 1, rl.DARKGRAY)
 }
 
