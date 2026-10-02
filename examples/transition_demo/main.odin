@@ -76,6 +76,7 @@ main :: proc() {
 			transitions.draw_fullscreen(trans)
 		}
 		rl.EndDrawing()
-		free_all(context.temp_allocator)
+
+		core.end_frame()
 	}
 }

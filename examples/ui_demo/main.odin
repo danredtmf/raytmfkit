@@ -135,6 +135,7 @@ main :: proc() {
 			ui.draw_scrollview_bar(sv)
 		}
 		rl.EndDrawing()
-		free_all(context.temp_allocator)
+
+		core.end_frame()
 	}
 }

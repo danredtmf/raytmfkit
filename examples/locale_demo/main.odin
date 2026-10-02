@@ -95,7 +95,8 @@ main :: proc() {
 			)
 		}
 		rl.EndDrawing()
-		free_all(context.temp_allocator)
+
+		core.end_frame()
 	}
 }
 
@@ -103,7 +104,7 @@ update_locales_text :: proc() {
 	delete(app_title)
 	delete(app_test_text)
 	delete(app_lang_text)
-	
+
 	app_title = core.cstring_alloc(
 		strings.concatenate({PACKAGE_NAME, " - ", locale.get(my_locale, "APP_NAME", my_lang)}),
 	)

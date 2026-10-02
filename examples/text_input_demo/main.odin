@@ -90,8 +90,6 @@ main :: proc() {
 		}
 		rl.EndDrawing()
 
-		core.apply_cursor()
-
-		free_all(context.temp_allocator)
+		core.end_frame()
 	}
 }

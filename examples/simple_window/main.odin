@@ -19,6 +19,7 @@ main :: proc() {
 			rl.ClearBackground(rl.BLACK)
 		}
 		rl.EndDrawing()
-		free_all(context.temp_allocator)
+
+		core.end_frame()
 	}
 }
