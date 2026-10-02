@@ -111,7 +111,7 @@ draw_dropdown :: proc(d: Dropdown, font: rl.Font, size: f32) {
     if d.focused {
         for i in 0 ..< len(d.items) {
             item_r := dropdown_item_rect(d, i)
-            bg := input.hover_rect(item_r) ? rl.DARKGRAY : rl.GRAY
+            bg := want_cursor_over(item_r, .POINTING_HAND) ? rl.DARKGRAY : rl.GRAY
             rl.DrawRectangleRec(item_r, bg)
             rl.DrawRectangleLinesEx(item_r, 1, rl.LIGHTGRAY)
 

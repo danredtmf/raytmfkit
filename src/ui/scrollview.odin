@@ -77,6 +77,8 @@ draw_scrollview_bar :: proc(sv: ScrollView) {
         (sv.scroll / max_scroll) * (sv.view_rect.height - thumb_h)
     thumb_r := rl.Rectangle{track_r.x, thumb_y, bar_w, thumb_h}
 
+    want_cursor_over(thumb_r, .RESIZE_NS)
+
     rl.DrawRectangleRec(thumb_r, rl.LIGHTGRAY)
     rl.DrawRectangleLinesEx(thumb_r, 1, rl.BLACK)
 }
