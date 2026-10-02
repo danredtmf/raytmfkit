@@ -1,6 +1,6 @@
 package main
 
-import "core:fmt"
+// import "core:fmt"
 import "core:strings"
 import rl "deps:raylib"
 import "raytmfkit:core"
@@ -102,21 +102,21 @@ main :: proc() {
 		p_ru := ui.layout_next_center(&inner, btn_ru_size)
 
 		// --- Диагностика. Убери после того, как разберёмся. ---
-		fmt.println("=== layout debug ===")
-		fmt.printf("scale          = %v\n", core.get_scale_value())
-		fmt.printf("btn_en_size    = %v %v\n", btn_en_size.x, btn_en_size.y)
-		fmt.printf("btn_ru_size    = %v %v\n", btn_ru_size.x, btn_ru_size.y)
+		// fmt.println("=== layout debug ===")
+		// fmt.printf("scale          = %v\n", core.get_scale_value())
+		// fmt.printf("btn_en_size    = %v %v\n", btn_en_size.x, btn_en_size.y)
+		// fmt.printf("btn_ru_size    = %v %v\n", btn_ru_size.x, btn_ru_size.y)
 		// fmt.printf("total          = %v %v\n", total.x, total.y)
 		// fmt.printf("origin         = %v %v\n", origin.x, origin.y)
 		// fmt.printf("slot_en        = %v %v\n", slot_en.x, slot_en.y)
 		// fmt.printf("slot_ru        = %v %v\n", slot_ru.x, slot_ru.y)
-		fmt.printf("p_en (center)  = %v %v\n", p_en.x, p_en.y)
-		fmt.printf("p_ru (center)  = %v %v\n", p_ru.x, p_ru.y)
-		fmt.printf("dx(centers)    = %v\n", p_ru.x - p_en.x)
-		fmt.printf(
-			"gap expected   = %v\n",
-			(p_ru.x - p_en.x) - btn_en_size.x / 2 - btn_ru_size.x / 2,
-		)
+		// fmt.printf("p_en (center)  = %v %v\n", p_en.x, p_en.y)
+		// fmt.printf("p_ru (center)  = %v %v\n", p_ru.x, p_ru.y)
+		// fmt.printf("dx(centers)    = %v\n", p_ru.x - p_en.x)
+		// fmt.printf(
+		// 	"gap expected   = %v\n",
+		// 	(p_ru.x - p_en.x) - btn_en_size.x / 2 - btn_ru_size.x / 2,
+		// )
 
 		// --- Input (btn_en/btn_ru — из прошлого кадра draw) ---
 		if input.pressed_on_rect(btn_en) {
@@ -133,7 +133,7 @@ main :: proc() {
 			rl.ClearBackground(rl.BLACK)
 
 			text.draw_text_aligned(app_test_text, 64, core.ctx.screen_half, rl.WHITE)
-			lang_rect := text.draw_text_aligned(
+			text.draw_text_aligned(
 				app_lang_text,
 				32,
 				lang_slot + lang_size / 2,
@@ -141,8 +141,8 @@ main :: proc() {
 				.CENTER,
 				.MIDDLE,
 			)
-			rl.DrawRectangleLinesEx(lang_rect, 1, rl.RED)
-			rl.DrawLine(i32(core.ctx.screen_half.x), 0, i32(core.ctx.screen_half.x), i32(core.ctx.screen_vec2.y), rl.WHITE)
+			// rl.DrawRectangleLinesEx(lang_rect, 1, rl.RED)
+			// rl.DrawLine(i32(core.ctx.screen_half.x), 0, i32(core.ctx.screen_half.x), i32(core.ctx.screen_vec2.y), rl.WHITE)
 
 			ui.draw_button(text.font_of(fonts), btn_en_label, 32, p_en, .CENTER, &btn_en,
                min_size = btn_en_size)
