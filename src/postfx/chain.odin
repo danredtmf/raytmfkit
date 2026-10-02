@@ -14,6 +14,8 @@ FinalScaleMode :: enum {
 Stage :: struct {
     target: RenderTarget,
     shader: rl.Shader,
+    user:    rawptr,                        // произвольный контекст для prepare
+    prepare: proc(c: ^Chain, s: ^Stage),    // вызывается перед blit, опционально
 }
 
 Chain :: struct {
@@ -79,8 +81,10 @@ run_chain :: proc(c: ^Chain) {
 
     prev := c.scene.tex.texture
     for i in 0 ..< len(c.stages) {
-        blit(c.stages[i].target, prev, c.stages[i].shader)
-        prev = c.stages[i].target.tex.texture
+        s := &c.stages[i]
+        if s.prepare != nil { s.prepare(c, s) }
+        blit(s.target, prev, s.shader)
+        prev = s.target.tex.texture
     }
 }
 
@@ -134,8 +138,22 @@ draw_final :: proc(c: ^Chain) {
     rl.DrawTexturePro(final_texture(c), src, dst, {0, 0}, 0, rl.WHITE)
 }
 
+// Тонкая обёртка — оставлена для совместимости.
 set_stage_shader :: proc(c: ^Chain, i: int, shader: rl.Shader) {
-    c.stages[i].shader = shader
+    set_stage(c, i, shader)
+}
+
+// Полная настройка стадии: шейдер + контекст + prepare.
+set_stage :: proc(
+    c:       ^Chain,
+    i:       int,
+    shader:  rl.Shader,
+    user:    rawptr = nil,
+    prepare: proc(c: ^Chain, s: ^Stage) = nil,
+) {
+    c.stages[i].shader  = shader
+    c.stages[i].user    = user
+    c.stages[i].prepare = prepare
 }
 
 // --- Маппинг координат ---
