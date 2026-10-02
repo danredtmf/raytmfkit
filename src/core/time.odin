@@ -15,3 +15,18 @@ begin_frame :: proc() {
     ctx.focused     = rl.IsWindowFocused()
     reset_cursor_intent()
 }
+
+// Парная к begin_frame. Звать в самом конце кадра, после rl.EndDrawing().
+//
+// Делает две вещи:
+//   1. apply_cursor — физически применяет последнее cursor-намерение кадра.
+//      Если end_frame не позвать, желание курсора потеряется, а иконка
+//      может остаться от предыдущего кадра.
+//   2. free_all(temp_allocator) — освобождает всю память, выделенную
+//      через context.temp_allocator в этом кадре. Это соответствует
+//      соглашению kit'а: temp живёт ровно один кадр. Если вашей игре
+//      нужны данные, переживающие кадр, — выделяйте context.allocator.
+end_frame :: proc() {
+    apply_cursor()
+    free_all(context.temp_allocator)
+}
