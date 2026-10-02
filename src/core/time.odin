@@ -6,14 +6,21 @@ begin_frame :: proc() {
     ctx.delta       = rl.GetFrameTime()
     ctx.time        = rl.GetTime()
     ctx.frame      += 1
-    ctx.screen      = render_resolution()
-    ctx.screen_vec2 = {f32(ctx.screen.x), f32(ctx.screen.y)}
-    ctx.screen_half = ctx.screen_vec2 / 2
+    sync_screen()
     ctx.mouse       = rl.GetMousePosition()
     ctx.mouse_delta = rl.GetMouseDelta()
     ctx.fullscreen  = is_fullscreen()
     ctx.focused     = rl.IsWindowFocused()
     reset_cursor_intent()
+}
+
+// Обновляет только размеры экрана в ctx, не трогая delta/time/frame/mouse.
+// Нужно, если код ДО первого begin_frame читает get_scale / ctx.screen_vec2
+// (типичный сценарий — посчитать размеры UI-элементов при загрузке).
+sync_screen :: proc() {
+    ctx.screen      = render_resolution()
+    ctx.screen_vec2 = {f32(ctx.screen.x), f32(ctx.screen.y)}
+    ctx.screen_half = ctx.screen_vec2 / 2
 }
 
 // Парная к begin_frame. Звать в самом конце кадра, после rl.EndDrawing().
