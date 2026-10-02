@@ -13,6 +13,7 @@
 - [Locale Demo](examples/locale_demo)
 - [Menu Demo](examples/menu_demo)
 - [Text Input Demo](examples/text_input_demo)
+- [Layout Demo](examples/layout_demo)
 
 ## Что не входит
 
