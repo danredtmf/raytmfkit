@@ -126,13 +126,12 @@ count_spaces :: proc(runes: []rune) -> int {
 }
 
 measure_lines_height :: proc(
-    lines: []Line,
-    font: rl.Font,
-    size: f32,
+    lines:     []Line,
+    size:      f32,
     spacing_v: f32,
 ) -> f32 {
     if len(lines) == 0 { return 0 }
-    line_h := f32(font.baseSize) * (size / f32(font.baseSize)) * 1.5 * spacing_v
+    line_h := size * 1.5 * spacing_v
     return line_h * f32(len(lines))
 }
 
@@ -152,7 +151,7 @@ measure_text_boxed_height :: proc(
     spacing_h: f32 = 0,
 ) -> f32 {
     _, lines := wrap_text_cached(font, text, max_width, size, spacing_h, word_wrap)
-    return measure_lines_height(lines, font, size, spacing_v)
+    return measure_lines_height(lines, size, spacing_v)
 }
 
 draw_lines :: proc(
