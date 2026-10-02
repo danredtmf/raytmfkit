@@ -1,5 +1,6 @@
 package main
 
+import "raytmfkit:debug"
 import rl "deps:raylib"
 import "raytmfkit:core"
 import "raytmfkit:input"
@@ -15,7 +16,7 @@ main :: proc() {
 	core.set_vsync(true)
 
 	data_font := #load("../_assets/fonts/OpenSans-Regular.ttf")
-	text.sdf_shader = text.load_default_sdf_shader()
+	text.sdf_shader = text.load_default_sdf_shader("../_assets/shaders/sdf.fshader")
 	cps := text.get_default_codepoints()
 	fonts := text.load_font_pair(data_font, 128, cps[:])
 	fonts.active = .SDF
@@ -56,8 +57,13 @@ main :: proc() {
 		"Десятый элемент / Tenth item",
 	}
 
+	debug.enabled = true
+
 	for !rl.WindowShouldClose() {
 		core.begin_frame()
+		debug.begin_frame()
+
+		debug.try_hot_reload_shaders()
 
 		if rl.IsKeyPressed(.F) {
 			core.toggle_fullscreen()
