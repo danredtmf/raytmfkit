@@ -206,6 +206,26 @@ text_input_layout :: proc(ti: TextInput) -> TextInputLayout {
     return out
 }
 
+// Общая часть: высота поля в screen px, как её считает update_text_input.
+@(private)
+text_input_height :: proc(ti: TextInput, font: rl.Font) -> f32 {
+    size   := core.get_scale(ti.font_size)
+    pad_y  := core.get_scale(ti.pad.y)
+    line_h := text.measure_text(font, "Ag", size).y
+    return line_h + pad_y * 2
+}
+
+// Размер поля, как его разместит update_text_input с заданной width
+// (неотмасштабированной). Возвращает screen px — готово к measure_stack /
+// layout_next. Высота считается той же формулой, что и в update_text_input.
+text_input_measure :: proc(
+    ti:    TextInput,
+    font:  rl.Font,
+    width: f32,
+) -> rl.Vector2 {
+    return {core.get_scale(width), text_input_height(ti, font)}
+}
+
 // Обновляет состояние и обрабатывает ввод. Звать в update-фазе.
 update_text_input :: proc(
 	ti:           ^TextInput,
@@ -215,9 +235,7 @@ update_text_input :: proc(
     width         := f32(400),
 ) {
 	size   := core.get_scale(ti.font_size)
-    pad_y  := core.get_scale(ti.pad.y)
-    line_h := text.measure_text(font, "Ag", size).y
-    h      := line_h + pad_y * 2
+	h      := text_input_height(ti^, font)
     w      := core.get_scale(width)
 
     origin := resolve_anchor(anchor, {w, h}, anchor_mode)
