@@ -136,6 +136,25 @@ measure_lines_height :: proc(
     return line_h * f32(len(lines))
 }
 
+// Высота текста, разбитого по max_width — без явных runes/lines.
+// Использует тот же LRU-кэш, что и draw_text_boxed, поэтому повторные
+// вызовы для неизменного текста не пересчитывают glyph_advance.
+//
+// Типичный сценарий: подобрать высоту тултипа/лога до рисования,
+// либо отцентрировать блок текста по вертикали.
+measure_text_boxed_height :: proc(
+    font:      rl.Font,
+    text:      string,
+    max_width: f32,
+    size:      f32,
+    word_wrap: bool,
+    spacing_v: f32 = 1,
+    spacing_h: f32 = 0,
+) -> f32 {
+    _, lines := wrap_text_cached(font, text, max_width, size, spacing_h, word_wrap)
+    return measure_lines_height(lines, font, size, spacing_v)
+}
+
 draw_lines :: proc(
     font:      rl.Font,
     runes:     []rune,
@@ -216,9 +235,7 @@ draw_text_boxed :: proc(
     spacing_h: f32 = 0,
     use_sdf:   bool = false,
 ) {
-    runes := utf8_to_runes(text, context.temp_allocator)
-    lines := wrap_text(font, runes, rect.width, size, spacing_h, word_wrap)
-
+    runes, lines := wrap_text_cached(font, text, rect.width, size, spacing_h, word_wrap)
     draw_lines(font, runes, lines, rect, size, color,
         align_h, align_v, spacing_v, spacing_h, use_sdf)
 }
